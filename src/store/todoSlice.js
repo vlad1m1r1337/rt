@@ -41,7 +41,7 @@ export const toggleStatus = createAsyncThunk(
     'todos/toggleStatus',
     async function(id, {refectWithValue, dispatch, getState}) {
         const todos = getState().todos.todos.find(todos => todo.id === id);
-
+        console.log("some");
         try {
             const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
                 method: 'PATCH',
@@ -53,8 +53,16 @@ export const toggleStatus = createAsyncThunk(
                     completed: !todo.completed,
                 })
             });
+
+            if (!response.ok) {
+                throw new Error('Can\'t toggle status. Server error.');
+            }
+
+            const data = await response.json();
         }
-        catch (error) {}
+        catch (error) {
+
+        }
         return refectWithValue(error.message);
     }
 )
